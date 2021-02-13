@@ -36,6 +36,7 @@ func mavg (topic string, channel chan Sample) {
     }
     sum := 0.0
     
+    // service loop
     i := 0
     for sample := range channel {
         value := sample.Value
@@ -67,6 +68,7 @@ func dispatch_sample (client mqtt.Client, message mqtt.Message) {
         return
     }
     
+    // make sure that channel exists
     dispatch_mux.Lock()
     channel, ok := dispatch[topic]
     if !ok {
@@ -76,6 +78,7 @@ func dispatch_sample (client mqtt.Client, message mqtt.Message) {
     }
     dispatch_mux.Unlock()
     
+    // queue channel
     channel <- sample
 }
 
