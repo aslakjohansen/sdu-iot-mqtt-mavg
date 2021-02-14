@@ -72,7 +72,7 @@ func dispatch_sample (client mqtt.Client, message mqtt.Message) {
     dispatch_mux.Lock()
     channel, ok := dispatch[topic]
     if !ok {
-        channel = make(chan Sample)
+        channel = make(chan Sample, 2)
         go mavg(topic, channel);
         dispatch[topic] = channel
     }
